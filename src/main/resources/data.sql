@@ -1,0 +1,4 @@
+insert into courier(name, start_time, end_time, charge_per_mile, max_distance,has_refrigerator_box) values('Bobby', '09:00', '13:00', 1.5, 5, true);
+insert into courier(name, start_time, end_time, charge_per_mile, max_distance,has_refrigerator_box) values('Martin', '09:00', '17:00', 1.50 ,3.0, false);
+insert into courier(name, start_time, end_time, charge_per_mile, max_distance,has_refrigerator_box) values('Geoff', '10:00', '16:00', 2.00, 4.0,true );
+insert into courier(name, start_time, end_time, charge_per_mile, max_distance,has_refrigerator_box) values('John', '10:00', '16:00', 1.25 ,3.0, true);
