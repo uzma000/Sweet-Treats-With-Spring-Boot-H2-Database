@@ -10,13 +10,13 @@ public interface CourierService {
 
     List<Courier> getAllCouriers();
 
-    Courier findCourier(long id) throws Exception;
+    Courier findCourier(String id) throws Exception;
 
     Courier getBestSuitableCourier(Order order) throws Exception;
 
-    Courier updateCourierDetails(Long id, Courier courierDetails) throws Exception;
+    Courier updateCourierDetails(String id, Courier courierDetails) throws Exception;
 
-    void deleteCourier(Long id) throws Exception;
+    void deleteCourier(String id) throws Exception;
 
     boolean isCourierInformationValid(Courier courierDetails) throws Exception;
 }

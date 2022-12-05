@@ -1,21 +1,15 @@
 package com.sweettreats.Sweet_Treats_With_Spring_Boot.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.lang.annotation.Documented;
-import java.time.LocalTime;
-
-@Entity
+@Document(collection = "couriers")
 public class Courier {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private String name;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private String startTime; // Changed to String to deal with database issue in MongoDb
+    private String endTime; // Changed to String to deal with database issue in MongoDb
     private double chargePerMile;
     private double maxDistance;
     private boolean hasRefrigeratorBox;
@@ -27,8 +21,10 @@ public class Courier {
         this.name = name;
         this.maxDistance = maxDistance;
         this.chargePerMile = chargePerMile;
-        this.startTime = LocalTime.parse(startTime);
-        this.endTime = LocalTime.parse(endTime);
+        this.startTime = startTime;
+        this.endTime = endTime;
+//        this.startTime = LocalTime.parse(startTime);
+//        this.endTime = LocalTime.parse(endTime);
         this.hasRefrigeratorBox = hasRefrigeratorBox;
 
     }
@@ -40,11 +36,11 @@ public class Courier {
 
     //    getter and setter method
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -56,19 +52,19 @@ public class Courier {
         this.name = name;
     }
 
-    public LocalTime getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalTime startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public LocalTime getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalTime endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 

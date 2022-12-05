@@ -28,7 +28,12 @@ public class Controller {
         this.order = order;
     }
 
+
+    //    all the methods with "@RequestMapping()", the path they are mapping to "path = "/courier""
+//    and the request type we are sending, "method = RequestMethod.POST".
     @RequestMapping(path = "/courier", method = RequestMethod.POST)
+
+//     In addCourier() method it is taking a new courier details as a payload.
     public ResponseEntity<Courier> addCourier(@RequestBody Courier courier) throws Exception {
         if (courierService.isCourierInformationValid(courier)) {
             Courier newCourier = courierService.addCourier(courier);
@@ -46,11 +51,15 @@ public class Controller {
 
     }
 
+//    Path variable will search for the courier on the basis of the id provided in the path variable.
+
     @RequestMapping(path = "/courier/{id}")
-    public ResponseEntity<Courier> getCourier(@PathVariable("id") long id) throws Exception {
+    public ResponseEntity<Courier> getCourier(@PathVariable("id") String id) throws Exception {
+//        using try catch block to find courier on the basis of provided id
         try {
             return new ResponseEntity<Courier>(courierService.findCourier(id), HttpStatus.OK);
         } catch (Exception exception) {
+//            if courier not found then will throw an error with appropriate http response
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Courier " + id + " not found");
         }
 
@@ -62,7 +71,6 @@ public class Controller {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Correct Time and Distance are required.");
         }
         Order makeOrder = order.makeOrder(time, refrigerator, distance);
-//        Order makeOrder = new Order(time, refrigerator, distance);
         try {
             return new ResponseEntity<Courier>(courierService.getBestSuitableCourier(makeOrder), HttpStatus.OK);
         } catch (Exception exception) {
@@ -72,7 +80,7 @@ public class Controller {
     }
 
     @RequestMapping(path = "/courier/{courier_id}", method = RequestMethod.PUT)
-    public ResponseEntity<Courier> updateCourier(@PathVariable("courier_id") Long id, @RequestBody Courier courierDetails) throws Exception {
+    public ResponseEntity<Courier> updateCourier(@PathVariable("courier_id") String id, @RequestBody Courier courierDetails) throws Exception {
 
         try {
             new ResponseEntity<Courier>(courierService.findCourier(id), HttpStatus.OK);
@@ -88,7 +96,7 @@ public class Controller {
     }
 
     @RequestMapping(path = "/courier/{courier_id}", method = RequestMethod.DELETE)
-    public String deleteCourier(@PathVariable("courier_id") Long id) {
+    public String deleteCourier(@PathVariable("courier_id") String id) {
         try {
             courierService.deleteCourier(id);
             return "Courier: " + id + " deleted";

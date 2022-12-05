@@ -79,7 +79,7 @@ public class CourierServiceImplementation implements CourierService {
 
     // Get a courier with an ID
     @Override
-    public Courier findCourier(long id) throws Exception {
+    public Courier findCourier(String id) throws Exception {
         Optional<Courier> courier = courierRepository.findById(id);
         if (courier.isPresent()) {
             LOGGER.log(Level.INFO, "Getting a Courier With ID: " + id);
@@ -92,7 +92,7 @@ public class CourierServiceImplementation implements CourierService {
 
     // Check if courier is available for the delivery by using isAfter and isBefore method
     public boolean isAvailable(Order order, Courier courier) {
-        return order.getOrderTime().isAfter(courier.getStartTime()) && order.getOrderTime().isBefore(courier.getEndTime()) &&
+        return order.getOrderTime().isAfter(LocalTime.parse(courier.getStartTime())) && order.getOrderTime().isBefore(LocalTime.parse(courier.getEndTime())) &&
                 order.getDistance() <= courier.getMaxDistance() && order.isRefrigeratorRequire() == courier.isHasRefrigeratorBox();
     }
 
@@ -152,7 +152,7 @@ public class CourierServiceImplementation implements CourierService {
 
     // Update a courier's Details
     @Override
-    public Courier updateCourierDetails(Long id, Courier courierDetails) throws Exception {
+    public Courier updateCourierDetails(String id, Courier courierDetails) throws Exception {
         try {
             Courier courier = courierRepository.findById(id).get();
             LOGGER.log(Level.INFO, "Updating Courier Details of Id: " + id + " Name: " + courier.getName() +
@@ -180,7 +180,7 @@ public class CourierServiceImplementation implements CourierService {
 
     // Delete a courier
     @Override
-    public void deleteCourier(Long id) throws Exception {
+    public void deleteCourier(String id) throws Exception {
         Optional<Courier> courier = courierRepository.findById(id);
         if (courier.isPresent()) {
             LOGGER.log(Level.INFO, "Courier: " + id + " has been Deleted.");
