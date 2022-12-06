@@ -1,5 +1,7 @@
 package com.sweettreats.Sweet_Treats_With_Spring_Boot.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,6 +11,8 @@ import java.util.regex.Pattern;
 
 import static java.time.format.DateTimeFormatter.ofPattern;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Document(collection = "orders")
 public class Order {
     @Id
@@ -22,6 +26,14 @@ public class Order {
         if (orderTime == null || orderTime == "") {
             throw new IllegalArgumentException("Invalid order time");
         } else this.orderTime = getTimePattern(orderTime);
+        this.isRefrigeratorRequire = isRefrigeratorRequire;
+        this.distance = distance;
+    }
+
+
+    public Order(String id, String orderTime, boolean isRefrigeratorRequire, double distance) {
+        this.id = id;
+        this.orderTime = LocalTime.parse(orderTime);
         this.isRefrigeratorRequire = isRefrigeratorRequire;
         this.distance = distance;
     }
@@ -53,6 +65,14 @@ public class Order {
 
     public void setDistance(double distance) {
         this.distance = distance;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     // Check if time is in HH:mm format

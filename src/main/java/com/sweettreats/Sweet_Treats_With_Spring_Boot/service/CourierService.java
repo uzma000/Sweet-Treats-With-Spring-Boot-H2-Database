@@ -19,4 +19,5 @@ public interface CourierService {
     void deleteCourier(String id) throws Exception;
 
     boolean isCourierInformationValid(Courier courierDetails) throws Exception;
+
 }

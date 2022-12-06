@@ -6,9 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SweetTreatsWithSpringBootApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SweetTreatsWithSpringBootApplication.class, args);
-		System.out.println("Sweet Treats App Started");
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SweetTreatsWithSpringBootApplication.class, args);
+        System.out.println("Sweet Treats App Started");
+    }
 
 }

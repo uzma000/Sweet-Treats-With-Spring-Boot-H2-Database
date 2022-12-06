@@ -1,9 +1,20 @@
 package com.sweettreats.Sweet_Treats_With_Spring_Boot.service;
 
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.ServerApi;
+import com.mongodb.ServerApiVersion;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoDatabase;
 import com.sweettreats.Sweet_Treats_With_Spring_Boot.entity.Courier;
 import com.sweettreats.Sweet_Treats_With_Spring_Boot.entity.Order;
 import com.sweettreats.Sweet_Treats_With_Spring_Boot.repository.CourierRepository;
+import org.bson.codecs.configuration.CodecRegistries;
+import org.bson.codecs.configuration.CodecRegistry;
+import org.bson.codecs.pojo.PojoCodecProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -21,7 +32,25 @@ import java.util.stream.Collectors;
 import static com.sweettreats.Sweet_Treats_With_Spring_Boot.entity.Order.isValidTime;
 
 @Service
+
 public class CourierServiceImplementation implements CourierService {
+
+    private MongoTemplate mongoTemplate;
+
+    ConnectionString connectionString = new ConnectionString("mongodb+srv://m001-student:m001-mongodb-basics@sandbox.j6gomz9.mongodb.net/?retryWrites=true&w=majority");
+    CodecRegistry defaultCodecRegistry = MongoClientSettings.getDefaultCodecRegistry();
+    CodecRegistry fromProviderRegistry = CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build());
+    CodecRegistry pojoCodecRegistry = CodecRegistries.fromRegistries(defaultCodecRegistry, fromProviderRegistry);
+    MongoClientSettings settings = MongoClientSettings.builder()
+            .applyConnectionString(connectionString)
+            .serverApi(ServerApi.builder()
+                    .version(ServerApiVersion.V1)
+                    .build())
+            .codecRegistry(pojoCodecRegistry)
+            .build();
+    MongoClient mongoClient = MongoClients.create(settings);
+    MongoDatabase database = mongoClient.getDatabase("Sweet_Treats");
+
     // Getting a Logger with Class Name
     private static final Logger LOGGER = Logger.getLogger(CourierServiceImplementation.class.getName());
 
@@ -46,8 +75,6 @@ public class CourierServiceImplementation implements CourierService {
     public boolean isCourierInformationValid(Courier courierDetails) {
         if (courierDetails.getName().isEmpty() || courierDetails.getName().length() < 3 ||
                 !isValidTime(String.valueOf((courierDetails.getStartTime()))) ||
-//                courierDetails.getStartTime().isBefore(LocalTime.parse("09:00", DateTimeFormatter.ofPattern("HH:mm"))) ||
-//                courierDetails.getEndTime().isAfter(LocalTime.parse("17:00", DateTimeFormatter.ofPattern("HH:mm"))) ||
                 courierDetails.getStartTime() == null ||
                 courierDetails.getEndTime() == null ||
                 courierDetails.getChargePerMile() < 1 ||
@@ -56,7 +83,6 @@ public class CourierServiceImplementation implements CourierService {
         } else {
             return true;
         }
-
     }
 
     // Add a courier to couriers database
@@ -64,7 +90,8 @@ public class CourierServiceImplementation implements CourierService {
     public Courier addCourier(Courier newCourier) throws Exception {
         if (isCourierInformationValid(newCourier)) {
             LOGGER.log(Level.INFO, "New Courier added: " + newCourier.getName());
-            return courierRepository.save(newCourier);
+            database.getCollection("couriers", Courier.class).insertOne(newCourier);
+            return null;
         } else {
             throw new Exception("Correct Courier info needed");
         }

@@ -15,17 +15,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/sweet_treats")
 public class Controller {
-    private CourierService courierService;
+    private final CourierService courierService;
     private OrderService order;
 
     @Autowired
-    public void setCourierService(CourierService courierService) {
+    public Controller(CourierService courierService, OrderService orderService) {
         this.courierService = courierService;
-    }
-
-    @Autowired
-    public void setOrder(OrderService order) {
-        this.order = order;
+        this.order = orderService;
     }
 
 
@@ -52,7 +48,6 @@ public class Controller {
     }
 
 //    Path variable will search for the courier on the basis of the id provided in the path variable.
-
     @RequestMapping(path = "/courier/{id}")
     public ResponseEntity<Courier> getCourier(@PathVariable("id") String id) throws Exception {
 //        using try catch block to find courier on the basis of provided id

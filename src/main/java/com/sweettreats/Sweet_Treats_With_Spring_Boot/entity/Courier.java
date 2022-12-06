@@ -1,9 +1,15 @@
 package com.sweettreats.Sweet_Treats_With_Spring_Boot.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@Builder
 @Document(collection = "couriers")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Courier {
     @Id
     private String id;
@@ -29,10 +35,6 @@ public class Courier {
 
     }
 
-    //No Arguments Constructor
-    public Courier() {
-
-    }
 
     //    getter and setter method
 
